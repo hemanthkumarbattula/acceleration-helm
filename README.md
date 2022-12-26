@@ -7,7 +7,9 @@
 to deploy Typescript and Node.js app using helm do the following:
 
     1- Create an image for every microservice using the Docker file 
-        docker build --target acceleration-a -t repo/name:tag .
+        	docker build --target acceleration-a -t repo/name:tag .
+		docker build --target acceleration-dv -t repo/name:tag .
+		docker build --target acceleration-calc -t repo/name:tag .
     2- Use helm  files
     3- create deployment for these apps
 
