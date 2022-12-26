@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.acceleration_a.name }}
+  namespace: {{ .Values.acceleration_a.namespace }}
+  labels:
+    name: {{ .Values.acceleration_a.name }}
+spec:
+  replicas: {{ .Values.acceleration_a.replicas }}
+  selector:
+    matchLabels:
+      name: {{ .Values.acceleration_a.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.acceleration_a.name }}
+    spec:
+      containers:
+      - name: {{ .Values.acceleration_a.name }}
+        image: "{{ .Values.acceleration_a.image.repository }}:{{ .Values.acceleration_a.image.tag }}"
+        imagePullPolicy: '{{ .Values.acceleration_a.pullPolicy }}'
+        resources:
+            requests:
+              cpu: '{{ .Values.acceleration_a.resources.requests.cpu }}'
+              memory: '{{ .Values.acceleration_calc.resources.requests.memory }}'
+            limits:
+              cpu: '{{ .Values.acceleration_a.resources.limits.cpu }}'
+              memory: '{{ .Values.acceleration_a.resources.limits.memory }}'
+        env:
+        - name: "WEB_PORT"
+          value: "{{ .Values.acceleration_a.ports.webport }}"
+        ports:
+        - containerPort: {{ .Values.acceleration_a.ports.webport }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.acceleration_a.ports.webport }}
+          initialDelaySeconds: 2 
+          periodSeconds: 2 
+          timeoutSeconds: 1 
+          successThreshold: 1  
+          failureThreshold: 3
+        livenessProbe: 
+          httpGet: 
+            path: /health
+            port: {{ .Values.acceleration_a.ports.webport }}
+          initialDelaySeconds: 2 #Default 0 
+          periodSeconds: 2 #Default 10 
+          timeoutSeconds: 1 #Default 1 
+          successThreshold: 1 #Default 1 
+          failureThreshold: 3 #Default 3 
+      imagePullSecrets:
+      - name: {{ .Values.acceleration_dv.image.credentials.secretName }}

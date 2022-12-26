@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.acceleration_dv.service.name }}
+  namespace: {{ .Values.acceleration_dv.namespace }}
+  labels:
+    name: {{ .Values.acceleration_dv.service.name }}
+    
+spec:
+  type: {{ .Values.acceleration_calc.service.type }}
+  selector:
+    name: {{ .Values.acceleration_dv.name }}
+  ports:
+    - port: {{ .Values.acceleration_dv.ports.webport }}
+      targetPort: {{ .Values.acceleration_dv.ports.webport }}
+      protocol: TCP
+

@@ -1,0 +1,74 @@
+# Default values for acceleration.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+#namespace: default
+acceleration_a:
+  name: "acceleration-a"
+  namespace: default
+  replicas: 2
+  image: 
+    repository: hemanthkumarbattula/acceleration-a
+    tag: latest
+    credentials:
+      secretName: mycred
+  pullPolicy: IfNotPresent
+  ports:
+    webport: 3002
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "1Gi"
+    limits:
+      cpu: "8"
+      memory: "4Gi"
+  service:
+    name: accelerationa-service
+    type: NodePort
+    
+acceleration_calc:
+  name: "acceleration-calc"
+  namespace: default
+  replicas: 2
+  image: 
+    repository: hemanthkumarbattula/acceleration-calc
+    tag: latest
+    credentials:
+      secretName: mycred
+  pullPolicy: IfNotPresent
+  ports:
+    webport: 3000
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "1Gi"
+    limits:
+      cpu: "8"
+      memory: "4Gi"
+  service:
+    name: accelerationcalc-service
+    type: ClusterIP
+  ingress:
+    name: ingress-accelerationcalc
+
+acceleration_dv:
+  name: "acceleration-dv"
+  namespace: default
+  replicas: 2
+  image: 
+    repository: hemanthkumarbattula/acceleration-dv
+    tag: latest
+    credentials:
+      secretName: mycred
+  pullPolicy: IfNotPresent
+  ports:
+    webport: 3001
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "1Gi"
+    limits:
+      cpu: "8"
+      memory: "4Gi"
+  service:
+    name: accelerationdv-service
+    type: NodePort

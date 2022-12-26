@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.acceleration_calc.service.name }}
+  namespace: {{ .Values.acceleration_calc.namespace }}
+
+spec:
+  type: {{ .Values.acceleration_calc.service.type }}
+  selector:
+    name: {{ .Values.acceleration_calc.name }}
+  ports:
+    - port: {{ .Values.acceleration_calc.ports.webport }}
+      targetPort: {{ .Values.acceleration_calc.ports.webport }}
+      

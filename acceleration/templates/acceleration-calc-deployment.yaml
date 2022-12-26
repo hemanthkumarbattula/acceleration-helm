@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.acceleration_calc.name }}
+  namespace: {{ .Values.acceleration_calc.namespace }}
+  labels:
+    name: {{ .Values.acceleration_calc.name }}
+spec:
+  replicas: {{ .Values.acceleration_calc.replicas }}
+  selector:
+    matchLabels:
+      name: {{ .Values.acceleration_calc.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.acceleration_calc.name }}
+    spec:
+      containers:
+      - name: {{ .Values.acceleration_calc.name }}
+        image: "{{ .Values.acceleration_calc.image.repository }}:{{ .Values.acceleration_calc.image.tag }}"
+        imagePullPolicy: '{{ .Values.acceleration_calc.pullPolicy }}'
+        resources:
+            requests:
+              cpu: '{{ .Values.acceleration_calc.resources.requests.cpu }}'
+              memory: '{{ .Values.acceleration_calc.resources.requests.memory }}'
+            limits:
+              cpu: '{{ .Values.acceleration_calc.resources.limits.cpu }}'
+              memory: '{{ .Values.acceleration_calc.resources.limits.memory }}'
+        env:
+        - name: "WEB_PORT"
+          value: "{{ .Values.acceleration_calc.ports.webport }}"
+        - name: "DV_URL"
+          value: "http://{{ .Values.acceleration_dv.service.name }}:{{ .Values.acceleration_dv.ports.webport }}/dv"
+        - name: "A_URL"
+          value: "http://{{ .Values.acceleration_a.service.name }}:{{ .Values.acceleration_a.ports.webport }}/a"
+        ports:
+        - containerPort: {{ .Values.acceleration_calc.ports.webport }}
+        livenessProbe: 
+          httpGet: 
+            path: /health
+            port: {{ .Values.acceleration_calc.ports.webport }}
+          initialDelaySeconds: 2 #Default 0 
+          periodSeconds: 2 #Default 10 
+          timeoutSeconds: 1 #Default 1 
+          successThreshold: 1 #Default 1 
+          failureThreshold: 3 #Default 3
+      imagePullSecrets:
+      - name: {{ .Values.acceleration_dv.image.credentials.secretName }}

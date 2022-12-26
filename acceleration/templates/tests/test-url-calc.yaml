@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: posthooktainer
+  namespace: {{ .Values.acceleration_calc.namespace }}
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "-5"
+  labels:
+    app.kubernetes.io/name: urls
+  
+spec:
+  containers:
+    - name: wget-calc
+      image: busybox
+      imagePullPolicy: IfNotPresent
+      command: ['wget']
+      args:  ["http://{{ .Values.acceleration_calc.service.name }}:{{ .Values.acceleration_calc.ports.webport }}/health"]
+   
+  restartPolicy: Never
+  

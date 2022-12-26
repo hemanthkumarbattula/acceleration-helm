@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.acceleration_dv.name }}
+  namespace: {{ .Values.acceleration_dv.namespace }}  
+  labels:
+    name: {{ .Values.acceleration_dv.name }}
+spec:
+  replicas: {{ .Values.acceleration_dv.replicas }}
+  selector:
+    matchLabels:
+      name: {{ .Values.acceleration_dv.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.acceleration_dv.name }}
+    spec:
+      containers:
+      - name: {{ .Values.acceleration_dv.name }}
+        image: "{{ .Values.acceleration_dv.image.repository }}:{{ .Values.acceleration_dv.image.tag }}"
+        imagePullPolicy: '{{ .Values.acceleration_dv.pullPolicy }}'
+        resources:
+            requests:
+              cpu: '{{ .Values.acceleration_dv.resources.requests.cpu }}'
+              memory: '{{ .Values.acceleration_calc.resources.requests.memory }}'
+            limits:
+              cpu: '{{ .Values.acceleration_dv.resources.limits.cpu }}'
+              memory: '{{ .Values.acceleration_dv.resources.limits.memory }}'
+        env:
+        - name: "WEB_PORT"
+          value: "{{ .Values.acceleration_dv.ports.webport }}"
+        ports:
+        - name: http
+          containerPort: {{ .Values.acceleration_dv.ports.webport }}
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          
+        livenessProbe: 
+          httpGet: 
+            path: /health
+            port: http 
+          
+      imagePullSecrets:
+      - name: {{ .Values.acceleration_dv.image.credentials.secretName }}
+
+      

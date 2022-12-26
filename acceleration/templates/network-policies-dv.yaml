@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: network-policy-dv
+  namespace: {{ .Values.acceleration_dv.namespace }}
+  
+spec:
+  podSelector:
+    matchLabels:
+      name: {{ .Values.acceleration_dv.name }}
+  policyTypes:
+  - Egress
+  - Ingress
+  egress:
+    - {}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: {{ .Values.acceleration_calc.name }}
+    ports:
+    - protocol: TCP
+      port: {{ .Values.acceleration_dv.ports.webport }}
+
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
