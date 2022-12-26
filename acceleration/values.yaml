@@ -1,19 +1,23 @@
 # Default values for acceleration.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-#namespace: default
+#The acceleration-a microservice variables and values
 acceleration_a:
+#acceleration-a deployment name and namespace
   name: "acceleration-a"
   namespace: default
   replicas: 2
+#acceleration-a image name, tag and credentials secret
   image: 
     repository: hemanthkumarbattula/acceleration-a
     tag: latest
     credentials:
       secretName: mycred
   pullPolicy: IfNotPresent
+#acceleration-a TCP port
   ports:
     webport: 3002
+#acceleration-a resource requests and limits
   resources:
     requests:
       cpu: "100m"
@@ -21,14 +25,18 @@ acceleration_a:
     limits:
       cpu: "8"
       memory: "4Gi"
+#acceleration-a service name and service type
   service:
     name: accelerationa-service
     type: NodePort
-    
+
+#The acceleration-calc microservice variables and values   
 acceleration_calc:
+#acceleration-calc deployment name and namespace
   name: "acceleration-calc"
   namespace: default
   replicas: 2
+#acceleration-calc image name, tag and credentials secret
   image: 
     repository: hemanthkumarbattula/acceleration-calc
     tag: latest
@@ -44,12 +52,15 @@ acceleration_calc:
     limits:
       cpu: "8"
       memory: "4Gi"
+#acceleration-calc service name and service type
   service:
     name: accelerationcalc-service
     type: ClusterIP
+#acceleration-calc ingress source name
   ingress:
     name: ingress-accelerationcalc
 
+#The acceleration-dv microservice variables and values
 acceleration_dv:
   name: "acceleration-dv"
   namespace: default
@@ -62,6 +73,7 @@ acceleration_dv:
   pullPolicy: IfNotPresent
   ports:
     webport: 3001
+#acceleration-dv resource requests and limits
   resources:
     requests:
       cpu: "100m"
@@ -69,6 +81,7 @@ acceleration_dv:
     limits:
       cpu: "8"
       memory: "4Gi"
+#acceleration-dv service name and type
   service:
     name: accelerationdv-service
     type: NodePort
