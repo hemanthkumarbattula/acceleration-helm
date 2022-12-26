@@ -1,5 +1,8 @@
 # acceleration-helm
 
+<img width="540" alt="solution-network-diagram" src="https://user-images.githubusercontent.com/27859101/209586051-f315618b-b688-4c09-b400-7c37424a8c23.PNG">
+
+
 # Join-devops-challenge
 to deploy Typescript and Node.js app using helm do the following:
 
