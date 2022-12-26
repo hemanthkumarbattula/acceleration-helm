@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.acceleration_a.service.name }}
   namespace: {{ .Values.acceleration_a.namespace }}
 spec:
-  type: {{ .Values.acceleration_a.service.type }}
+  type: {{ default "NodePort" .Values.acceleration_a.service.type }}
   selector:
     name: {{ .Values.acceleration_a.name }}
   ports:
