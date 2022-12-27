@@ -11,15 +11,17 @@ to deploy Typescript and Node.js app using helm do the following:
 		docker build --target acceleration-dv -t repo/name:tag .
 		docker build --target acceleration-calc -t repo/name:tag .
     2- Use helm  files
+    	i) if an ingress controller is already available in the kuberenetes cluster. Just deploy the 3 microservices:
+			helm install acceleration ./acceleration
+	
+	ii) If you want both ingress controller and microservices to be installed together in the cluster, run:
+			helm install acceleration acceleration-0.1.0.tgz
+			
+	iii) if you want ti install only an ingress controller run:
+		
+			helm install nginx-ingress ingress-nginx-4.4.0.tgz
+			
     3- create deployment for these apps
-
-  
-   
-
-create deployment, service for every appy  and ingress resources(only for calc):
-
-	helm intsall nginx-ingress
-  	helm install acceleration ./acceleration
 	
 Pre-requisite is to have a ingress controller running in the cluster.
 If an ingress controller is not present in the current cluster, you can use the helm repo 'https://kubernetes.github.io/ingress-nginx'.
