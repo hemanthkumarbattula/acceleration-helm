@@ -17,7 +17,7 @@ to deploy Typescript and Node.js app using helm do the following:
 	ii) If you want both ingress controller and microservices to be installed together in the cluster, run:
 			helm install acceleration acceleration-0.1.0.tgz
 			
-	iii) if you want ti install only an ingress controller run:
+	iii) if you want to install only an ingress controller run:
 		
 			helm install nginx-ingress ingress-nginx-4.4.0.tgz
 			
